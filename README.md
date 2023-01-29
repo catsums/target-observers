@@ -16,9 +16,9 @@ npm install @catsums/targetobservers
 
 ```html
 <!-- For Production -->
-<script src="unpkg.com/@catsums/target-observers@latest/lib/umd/index.min.js"></script>
+<script src="unpkg.com/@catsums/targetobservers@latest/lib/umd/index.min.js"></script>
 <!-- For Development -->
-<script src="unpkg.com/@catsums/target-observers@latest/lib/umd/index.dev.js"></script>
+<script src="unpkg.com/@catsums/targetobservers@latest/lib/umd/index.dev.js"></script>
 ```
 
 You can use ESM imports on these:
