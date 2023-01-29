@@ -9,7 +9,7 @@
 ## Installing with NPM
 
 ```shell
-npm install @catsums/target-observers
+npm install @catsums/targetobservers
 ```
 
 ## Installing with CDN
@@ -23,16 +23,16 @@ npm install @catsums/target-observers
 
 You can use ESM imports on these:
 ```js
-import {ProcessingTarget, TransformObserver, CollisionObserver} from "@catsums/target-observers";
+import {ProcessingTarget, TransformObserver, CollisionObserver} from "@catsums/targetobservers";
 ```
 You can also use CommonJS syntax:
 ```js
-const {ProcessingTarget, TransformObserver, CollisionObserver} = require("@catsums/target-observers");
+const {ProcessingTarget, TransformObserver, CollisionObserver} = require("@catsums/targetobservers");
 ```
 
 You may also use a CDN for which default library name is `TargetObservers` :
 ```html
-<script src="unpkg.com/@catsums/target-observers@latest/lib/umd/index.min.js"></script>
+<script src="unpkg.com/@catsums/targetobservers@latest/lib/umd/index.min.js"></script>
 <script>
 	//after adding <script> tag with cdn link
 	
@@ -127,7 +127,7 @@ Switches off the processing of the ProcessingTarget.
 A class that observes changes in the position, rotation and scale of the DOM Element. This works by not only being able to observe the bounding client rect of the Element, but the offset rect and transforms from CSS as well.
 
 ```js
-import {TransformObserver} from "@catsums/target-observers";
+import {TransformObserver} from "@catsums/targetobservers";
 
 let obs = new TransformObserver((entries, obs)=>{
 	for(let entry of entries){
@@ -302,7 +302,7 @@ Process information that shows the `processTime` at which it was processed, `log
 A class that observes collisions between DOM Elements based on their shapes.  This works by not only being able to observe the **bounding client rect** of the Element, but the **offset rect**,  the **clip-path** and **shape-outside**. These work as well with transforms considered, as well as with transforms excluded.
 
 ```js
-import {CollisionObserver, CollisionType} from "@catsums/target-observers";
+import {CollisionObserver, CollisionType} from "@catsums/targetobservers";
 
 let obs = new CollisionObserver((entries, obs)=>{
 	for(let entry of entries){
