@@ -1,6 +1,6 @@
 {
   "name": "@catsums/targetobservers",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Observers that can be used for checking specific changes in objects. This mainly consists of a Transform Observer and a Collision Observer for DOM Elements",
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.mjs",
