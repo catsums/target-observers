@@ -36,7 +36,7 @@ let _default = {
 	entryPoints: entry,
 	bundle: false,
 	platform: 'neutral',
-	globalName: 'Vector2JS',
+	globalName: 'TargetObservers',
 	plugins: [],
 	minify: false,
 	keepNames: true,
