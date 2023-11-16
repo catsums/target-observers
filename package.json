@@ -2,22 +2,20 @@
   "name": "@catsums/targetobservers",
   "version": "1.0.3",
   "description": "Observers that can be used for checking specific changes in objects. This mainly consists of a Transform Observer and a Collision Observer for DOM Elements",
-  "main": "./lib/cjs/index.js",
-  "module": "./lib/esm/index.mjs",
+  "types": "./lib/index.d.ts",
+  "main": "./lib/browser/index.js",
+  "module": "./lib/index.js",
   "exports": {
     ".": {
-      "require": "./lib/umd/index.dev.js",
-      "import": "./lib/umd/index.dev.js"
+      "require": "./lib/cjs/index.js",
+      "import": "./lib/esm/index.js"
     }
   },
-  "files": [
-    "./lib/**/*"
-  ],
   "scripts": {
-    "bundle": "npx webpack",
-    "build-cjs": "babel ./lib/esm -d ./lib/cjs",
-    "build": "npm run build-cjs && npm run bundle",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "bundle": "node --loader ts-node/esm build.mjs",
+    "build": "npm run bundle",
+    "update": "node update.mjs",
+    "npm-publish": "npm publish --access public"
   },
   "keywords": [
     "observer",
@@ -36,12 +34,15 @@
     "@babel/plugin-transform-runtime": "^7.19.6",
     "@babel/preset-env": "^7.20.2",
     "babel-loader": "^9.1.2",
-    "webpack": "^5.75.0",
-    "webpack-cli": "^5.0.1"
+    "esbuild": "^0.19.5",
+    "esbuild-plugin-umd-wrapper": "^2.0.0",
+    "esmify": "^2.1.1",
+    "npm-dts": "^1.3.12",
+    "ts-node": "^10.9.1"
   },
   "dependencies": {
-    "@catsums/my": "latest",
-    "@catsums/vector2": "latest",
+    "@catsums/my": "^1.2.1",
+    "@catsums/vector2": "^1.3.1",
     "svg-path-parser": "^1.1.0"
   }
 }
