@@ -17,7 +17,7 @@ declare global {
         new: T;
     }
 }
-export declare class ProcessingTarget extends EventTarget {
+export declare abstract class ProcessingTarget extends EventTarget {
     FPS: number;
     targetName: string;
     connectId: string;

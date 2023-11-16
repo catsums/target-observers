@@ -27,7 +27,12 @@ export class PropertyObserver extends ProcessingTarget{
 
 	_callback = (entries, obs) => {};
 
-	constructor(callback=(ent:any[], obs:ProcessingTarget)=>{}, {FPS=12, frameTolerance=Math.sqrt(Math.E)/1000, active=false, precision=0.001}){
+	public constructor(
+		callback : (entries:IObject[], obs:PropertyObserver) => void, 
+		opts? : {FPS?:number, frameTolerance?:number, active?:boolean, precision?:number}
+	);
+
+	constructor(callback=(ent:IObject[], obs:PropertyObserver)=>{}, {FPS=12, frameTolerance=Math.sqrt(Math.E)/1000, active=false, precision=0.001}){
 		super({FPS, frameTolerance, active});
 
 		this._precision = precision;

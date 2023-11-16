@@ -132,6 +132,11 @@ export class CollisionObserver extends ProcessingTarget{
 
 	_callback = (entries:ICollisionObserverEntry[], obs:CollisionObserver) => {};
 
+	public constructor(
+		callback : (entries:ICollisionObserverEntry[], obs:CollisionObserver) => void, 
+		opts? : {FPS?:number, frameTolerance?:number, precision?:number, tolerance?:number, active?:boolean}
+	);
+
 	constructor(
 		callback=(entries:ICollisionObserverEntry[], obs:CollisionObserver) => {},
 		{FPS=12, frameTolerance=Math.sqrt(Math.E)/1000, active=false, precision=0.001, tolerance=0.001}

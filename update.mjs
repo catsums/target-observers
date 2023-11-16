@@ -35,11 +35,14 @@ fs.promises.readFile('./package.json').then((res)=>{
 		if(!Settings.major && !Settings.minor){
 			newVersion[2] += 1;
 		}
-		if(Settings.major){
-			newVersion[0] += 1;
-		}
 		if(Settings.minor){
 			newVersion[1] += 1;
+			newVersion[2] = 0;
+		}
+		if(Settings.major){
+			newVersion[0] += 1;
+			newVersion[1] = 0;
+			newVersion[2] = 0;
 		}
 
 		let newRes = JSON.parse(JSON.stringify(res));

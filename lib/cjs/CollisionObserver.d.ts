@@ -78,12 +78,12 @@ export declare class CollisionObserver extends ProcessingTarget {
     };
     _entriesQueue: any[];
     _callback: (entries: ICollisionObserverEntry[], obs: CollisionObserver) => void;
-    constructor(callback: (entries: ICollisionObserverEntry[], obs: CollisionObserver) => void, { FPS, frameTolerance, active, precision, tolerance }: {
+    constructor(callback: (entries: ICollisionObserverEntry[], obs: CollisionObserver) => void, opts?: {
         FPS?: number;
         frameTolerance?: number;
-        active?: boolean;
         precision?: number;
         tolerance?: number;
+        active?: boolean;
     });
     onPhysicsProcess(delta: number): void;
     checkUpdates(elements: Element[]): Promise<void>;

@@ -6,7 +6,7 @@ export declare class PropertyObserver extends ProcessingTarget {
     _proxies: Map<any, any>;
     _entriesQueue: any[];
     _callback: (entries: any, obs: any) => void;
-    constructor(callback: (ent: any[], obs: ProcessingTarget) => void, { FPS, frameTolerance, active, precision }: {
+    constructor(callback: (entries: IObject[], obs: PropertyObserver) => void, opts?: {
         FPS?: number;
         frameTolerance?: number;
         active?: boolean;

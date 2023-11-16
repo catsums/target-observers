@@ -84,7 +84,7 @@ export declare class TransformObserver extends ProcessingTarget {
     _proxies: Map<Element, ITransformObserverProxy>;
     _entriesQueue: any[];
     _callback: (entries: ITransformObserverEntry[], obs: TransformObserver) => void;
-    constructor(callback: (entries: ITransformObserverEntry[], obs: TransformObserver) => void, { FPS, frameTolerance, active, precision }: {
+    constructor(callback: (entries: ITransformObserverEntry[], obs: TransformObserver) => void, opts?: {
         FPS?: number;
         frameTolerance?: number;
         active?: boolean;

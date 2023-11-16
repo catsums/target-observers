@@ -28,7 +28,7 @@ declare global{
 	}
 }
 
-export class ProcessingTarget extends EventTarget{
+export abstract class ProcessingTarget extends EventTarget{
 	FPS = 12;
 	targetName = randomID('[ProcessingTarget:',']');
 	connectId = randomID('ConnectID:');

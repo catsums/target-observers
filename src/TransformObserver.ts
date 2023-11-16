@@ -186,6 +186,11 @@ export class TransformObserver extends ProcessingTarget{
 
 	_callback = (entries:ITransformObserverEntry[], obs:TransformObserver) => {};
 
+	public constructor(
+		callback : (entries:ITransformObserverEntry[], obs:TransformObserver) => void, 
+		opts? : {FPS?:number, frameTolerance?:number, active?:boolean, precision?:number}
+	);
+
 	constructor(
 		callback=(entries:ITransformObserverEntry[], obs:TransformObserver) => {}, 
 		{FPS=12, frameTolerance=Math.sqrt(Math.E)/1000, active=false, precision=0.001}
