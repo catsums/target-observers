@@ -2,7 +2,7 @@
 
 // import {Vector2, Rect2, Transform2} from '@catsums/vector2';
 import {
-	hardPush, randomID, findItem, safeDivide, hash32, hash64
+	randomID,
 } from '@catsums/my';
 
 import { ProcessingTarget } from './ProcessingTarget';
@@ -137,10 +137,10 @@ export class CollisionObserver extends ProcessingTarget{
 		opts? : {FPS?:number, frameTolerance?:number, precision?:number, tolerance?:number, active?:boolean}
 	);
 
-	constructor(
-		callback=(entries:ICollisionObserverEntry[], obs:CollisionObserver) => {},
-		{FPS=12, frameTolerance=Math.sqrt(Math.E)/1000, active=false, precision=0.001, tolerance=0.001}
-	){
+	constructor(callback=(entries:ICollisionObserverEntry[], obs:CollisionObserver) => {}, opts:IObject={}){
+		
+		let {FPS=12, frameTolerance=Math.sqrt(Math.E)/1000, active=false, precision=0.001, tolerance=0.001} = opts;
+		
 		super({FPS, frameTolerance, active});
 
 		this._precision = precision;

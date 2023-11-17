@@ -57,7 +57,11 @@ export abstract class ProcessingTarget extends EventTarget{
 	get elapsedTime(){ return this._elapsedDeltaTime; }
 	get elapsedFixedTime(){ return this._elapsedFixedDeltaTime; }
 
-	constructor({FPS=12, frameTolerance=Math.sqrt(Math.E)/1000, active=false}){
+	public constructor(opts?:{FPS?:number, frameTolerance?:number, active?:boolean});
+	public constructor();
+
+	constructor(opts:IObject={}){
+		let {FPS=12, frameTolerance=Math.sqrt(Math.E)/1000, active=false} = opts;
 		super();
 
         this.FPS = FPS;

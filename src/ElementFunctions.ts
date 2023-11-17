@@ -1,7 +1,7 @@
 
 import {Vector2, Vector2Line, Rect2, Transform2} from '@catsums/vector2';
 import {
-	getCSSValueInPixels, isInfinity, safeDivide, deg2rad, rad2deg
+	getCSSValueInPixels, isInfinity, safeDivide, deg2rad, rad2deg,
 } from '@catsums/my';
 
 import SVGPathParser from 'svg-path-parser';
