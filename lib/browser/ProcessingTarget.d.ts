@@ -43,11 +43,12 @@ export declare abstract class ProcessingTarget extends EventTarget {
     get frameTime(): number;
     get elapsedTime(): number;
     get elapsedFixedTime(): number;
-    constructor({ FPS, frameTolerance, active }: {
+    constructor(opts?: {
         FPS?: number;
         frameTolerance?: number;
         active?: boolean;
     });
+    constructor();
     onPreProcess(timestamp: number): void;
     onReady(): void;
     onProcess(delta: number): void;
