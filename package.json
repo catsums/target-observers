@@ -1,6 +1,6 @@
 {
     "name": "@catsums/targetobservers",
-    "version": "1.1.2",
+    "version": "1.1.3",
     "description": "Observers that can be used for checking specific changes in objects. This mainly consists of a Transform Observer and a Collision Observer for DOM Elements",
     "types": "./lib/index.d.ts",
     "main": "./lib/browser/index.js",
@@ -12,9 +12,9 @@
         }
     },
     "scripts": {
-        "bundle": "node --loader ts-node/esm build.mjs",
+        "bundle": "ts-node build.ts",
         "build": "npm run bundle",
-        "update": "node update.mjs",
+        "update": "ts-node update.ts",
         "npm-publish": "npm publish --access public"
     },
     "keywords": [
@@ -29,11 +29,6 @@
     "author": "",
     "license": "ISC",
     "devDependencies": {
-        "@babel/cli": "^7.20.7",
-        "@babel/core": "^7.20.12",
-        "@babel/plugin-transform-runtime": "^7.19.6",
-        "@babel/preset-env": "^7.20.2",
-        "babel-loader": "^9.1.2",
         "esbuild": "^0.19.5",
         "esbuild-plugin-umd-wrapper": "^2.0.0",
         "esmify": "^2.1.1",
