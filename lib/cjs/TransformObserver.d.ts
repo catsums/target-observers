@@ -34,6 +34,9 @@ declare global {
         localmatrixtransform?: ITransformObserverTransformOpts;
         globalmatrixtransform?: ITransformObserverTransformOpts;
     }
+    interface ITransformObserverObserveOpts extends ITransformObserverOpts {
+        precision?: number;
+    }
     interface ITransformProxyData {
         translation?: IVector2;
         rotation?: number;
@@ -83,18 +86,21 @@ export declare class TransformObserver extends ProcessingTarget {
     };
     _proxies: Map<Element, ITransformObserverProxy>;
     _entriesQueue: any[];
-    _callback: (entries: ITransformObserverEntry[], obs: TransformObserver) => void;
-    constructor(callback: (entries: ITransformObserverEntry[], obs: TransformObserver) => void, opts?: {
+    _callback: (entries: ITransformObserverEntry[], obs?: TransformObserver) => void;
+    constructor(callback?: (entries: ITransformObserverEntry[], obs: TransformObserver) => void, opts?: {
         FPS?: number;
         frameTolerance?: number;
         active?: boolean;
         precision?: number;
     });
     onPhysicsProcess(delta: number): void;
-    checkUpdates(elements: Element[]): Promise<void>;
+    checkUpdates(elements?: Element[]): any;
     checkUpdate(elem: Element): Promise<ITransformObserverEntry>;
     handleEntries(ents: ITransformObserverEntry[]): void;
     processEntry(elem: Element, entry: ITransformObserverEntry, process: IProxyProcess): void;
-    observe(elem: Element | Element[], opts?: IObject | string[]): ITransformObserverProxy[];
+    observe(elem: Element, opts: ITransformObserverObserveOpts): any;
+    observe(elems: Element[], opts: ITransformObserverObserveOpts): any;
+    observe(elem: Element, opts: string[]): any;
+    observe(elems: Element[], opts: string[]): any;
     disconnect(elem: Element): void;
 }

@@ -116,8 +116,6 @@ export class PropertyObserver extends ProcessingTarget{
 				}
 			}
 
-			
-
 			if(Object.keys(_change).length){
 				entry.changes[_prop] = _change;
 			}
@@ -180,7 +178,7 @@ export class PropertyObserver extends ProcessingTarget{
 
 	}
 
-	observe(elem : Object|Object[], opts:Object|any[]){
+	observe(elem : Object|Object[], opts:IObject|any[]){
 		let proxies:any[] = null;
 
 		if(opts instanceof Array){
@@ -191,7 +189,7 @@ export class PropertyObserver extends ProcessingTarget{
 				opts[k] = true;
 			}
 		}
-		if(opts instanceof Object) opts = {};
+		if(opts instanceof Object == false) opts = {};
 
 		if(elem instanceof Array){
 			proxies = [];

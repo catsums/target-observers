@@ -130,10 +130,10 @@ export class CollisionObserver extends ProcessingTarget{
 
 	_entriesQueue = [];
 
-	_callback = (entries:ICollisionObserverEntry[], obs:CollisionObserver) => {};
+	_callback = (entries:ICollisionObserverEntry[], obs?:CollisionObserver) => {};
 
 	public constructor(
-		callback : (entries:ICollisionObserverEntry[], obs:CollisionObserver) => void, 
+		callback? : (entries:ICollisionObserverEntry[], obs?:CollisionObserver) => void, 
 		opts? : {FPS?:number, frameTolerance?:number, precision?:number, tolerance?:number, active?:boolean}
 	);
 
@@ -153,7 +153,8 @@ export class CollisionObserver extends ProcessingTarget{
 		this.checkUpdates(Object.values(this._observedElements));
 	}
 
-	async checkUpdates(elements:Element[]){
+	public async checkUpdates(elements?:Element[]);
+	async checkUpdates(elements:Element[] = Object.values(this._observedElements)){
 		let entries = [];
 		let promises = [];
 
@@ -207,6 +208,7 @@ export class CollisionObserver extends ProcessingTarget{
 			for(let targID of collLayer){
 				let targElem = this._observedElements[targID];
 				if(!targElem) continue;
+				if(targElem == elem) continue; //do not detect collisions with self
 
 				let targProxy = this._proxies.get(targElem);
 				if(!targProxy) continue;
@@ -252,7 +254,7 @@ export class CollisionObserver extends ProcessingTarget{
 									layers:[_layer],
 								}
 								_collisionData.intersect = null;
-							}else if(_intersect && !compareJSON (_intersect, proxy.currentCollisions.find( _c=>(_c.id == targID) ))){
+							}else if(_intersect && !compareJSON (_intersect, proxy.currentCollisions.find( _c=>(_c.id == targID) )?.intersect )){
 								_collisionData = {
 									targetID: targID,
 									target: targElem,
@@ -288,7 +290,7 @@ export class CollisionObserver extends ProcessingTarget{
 									layers:[_layer],
 								}
 								_collisionData.intersect = null;
-							}else if(_intersect && !compareJSON (_intersect, proxy.currentCollisions.find( _c=>(_c.id == targID) ))){
+							}else if(_intersect && !compareJSON (_intersect, proxy.currentCollisions.find( _c=>(_c.id == targID) )?.intersect )){
 								_collisionData = {
 									targetID: targID,
 									target: targElem,
@@ -342,7 +344,7 @@ export class CollisionObserver extends ProcessingTarget{
 									layers:[_layer],
 								}
 								_collisionData.intersect = null;
-							}else if(_intersects && !compareJSON (_intersects, proxy.currentCollisions.find( _c=>(_c.id == targID) ))){
+							}else if(_intersects && !compareJSON (_intersects, proxy.currentCollisions.find( _c=>(_c.id == targID) )?.intersect )){
 								_collisionData = {
 									targetID: targID,
 									target: targElem,
@@ -507,6 +509,9 @@ export class CollisionObserver extends ProcessingTarget{
 		proxy._process.processTime = process.processTime;
 		proxy._process.logTime = process.logTime;
 	}
+
+	public observe(elem:Element, opts:ICollisionObserverOpts);
+	public observe(elems:Element[], opts:ICollisionObserverOpts);
 
 	observe(elem:Element|Element[], opts=defaultObserveOpts){
 		let proxies:ICollisionObserverProxy[] = [];

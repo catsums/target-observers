@@ -77,6 +77,10 @@ declare global{
 		globalmatrixtransform? : ITransformObserverTransformOpts;
 	}
 
+	interface ITransformObserverObserveOpts extends ITransformObserverOpts{
+		precision? : number;
+	}
+
 	interface ITransformProxyData {
 		translation?: IVector2,
 		rotation?: number,
@@ -123,7 +127,7 @@ declare global{
 
 
 
-let defaultObserveOpts : ITransformObserverOpts = {
+let defaultObserveOpts : ITransformObserverObserveOpts = {
 	boundingrect:{
 		globalposition: false, gp:false,
 		localposition: false, lp:false,
@@ -184,14 +188,14 @@ export class TransformObserver extends ProcessingTarget{
 
 	_entriesQueue = [];
 
-	_callback = (entries:ITransformObserverEntry[], obs:TransformObserver) => {};
+	_callback = (entries:ITransformObserverEntry[], obs?:TransformObserver) => {};
 
 	public constructor(
-		callback : (entries:ITransformObserverEntry[], obs:TransformObserver) => void, 
+		callback? : (entries:ITransformObserverEntry[], obs:TransformObserver) => void, 
 		opts? : {FPS?:number, frameTolerance?:number, active?:boolean, precision?:number}
 	);
 
-	constructor(callback=(entries:ITransformObserverEntry[], obs:TransformObserver) => {}, opts:IObject={}){
+	constructor(callback=(entries:ITransformObserverEntry[], obs?:TransformObserver) => {}, opts:IObject={}){
 
 		let {FPS=12, frameTolerance=Math.sqrt(Math.E)/1000, active=false, precision=0.001} = opts;
 
@@ -205,7 +209,9 @@ export class TransformObserver extends ProcessingTarget{
 		this.checkUpdates(Object.values(this._observedElements));
 	}
 
-	async checkUpdates(elements:Element[]){
+	public async checkUpdates(elements?:Element[]);
+
+	async checkUpdates(elements:Element[] = Object.values(this._observedElements)){
 
 		let entries:ITransformObserverEntry[] = [];
 		let promises:Promise<ITransformObserverEntry>[] = [];
@@ -525,7 +531,12 @@ export class TransformObserver extends ProcessingTarget{
 
 	}
 
-	observe(elem : Element|Element[], opts:IObject|string[]=defaultObserveOpts){
+	public observe(elem:Element, opts:ITransformObserverObserveOpts);
+	public observe(elems:Element[], opts:ITransformObserverObserveOpts);
+	public observe(elem:Element, opts:string[]);
+	public observe(elems:Element[], opts:string[]);
+
+	observe(elem : Element|Element[], opts:ITransformObserverObserveOpts|string[]=defaultObserveOpts){
 		let proxies:ITransformObserverProxy[] = [];
 
 		if(opts instanceof Array){
