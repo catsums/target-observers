@@ -21,6 +21,6 @@ export declare class PropertyObserver extends ProcessingTarget {
     }>;
     handleEntries(ents: any): void;
     processEntry(elem: any, entry: any, process: any): void;
-    observe(elem: Object | Object[], opts: IObject | any[]): any[];
-    disconnect(elem: Object): void;
+    observe(elem: object | object[], opts: IObject | any[]): any[];
+    disconnect(elem: object): void;
 }

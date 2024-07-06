@@ -44,3 +44,5 @@ export declare function getPointsEllipse(r: IRect, props: any[], { vertices }: {
 export declare function getPointsInset(_rect: IRect, props: any[], opts: any): Vector2[];
 export declare function isPointInsidePolygon(polygon: IVector2[], vec: IVector2): boolean;
 export declare function getPolygonIntersect(pA: IVector2[] | IVector2[][], pB: IVector2[] | IVector2[][], precision?: number): IVector2[];
+export declare function fixPolygonPointsOrder(polygon: IVector2[], precision?: number): IVector2[];
+export declare function convexHullSort(polygon: IVector2[]): IVector2[];
