@@ -419,6 +419,7 @@ export function getBasicShapeProps(cssValueString:string){
 
 	let props = [propsString];
 	switch(shape){
+		case "circle":
 		case "polygon":
 			props = propsString.split(',');
 			break;
@@ -486,14 +487,15 @@ export function getElemPointsBasedOnBasicShape(elem : Element, shape : CSSShapeT
 			break;
 	}
 
-	points = rect.clampPoints(points);
+	let clampedPoints = rect.clampPoints(points);
 	let anchor = getAnchor(elem, {global:true});
-
-	let newPoints = (points).map((pt)=>{
+	
+	let newPoints = (clampedPoints).map((pt)=>{
 		return mTransform.applyTransform(pt, anchor);
 	}).map((pt)=>{
 		return sTransform.applyTransform(pt, anchor);
 	});
+	// console.log({points, rect, clampedPoints,newPoints})
 	// let newPoints = points.map((pt)=>{
 	// 	return sTransform.applyTransform(pt, sTransform.anchor);
 	// });
@@ -684,7 +686,7 @@ export function getPointsEllipse(r:IRect, props=[], {vertices=8}){
 		cy = val;
 	}
 
-	// MY.clog({cx, cy})
+	// console.log({rx,ry,cx,cy})
 
 	let pts:Vector2[] = []; let vertexCount = vertices ?? 10;
 	if(vertexCount<4) vertexCount = 4;
@@ -697,10 +699,14 @@ export function getPointsEllipse(r:IRect, props=[], {vertices=8}){
 		pts.push(pt);
 	}
 
+	
 	let t0 = new Transform2(new Vector2(cx,cy));
-	let t1 = new Transform2(new Vector2(rect.left,rect.top));
-	pts = pts.map((pt)=>(t1.applyTranslate(pt)))
+	// let t1 = new Transform2(new Vector2(rect.left,rect.top));
+	// console.log("init 0"); console.log({pts});
+	// pts = pts.map((pt)=>(t1.applyTranslate(pt)))
+	// console.log("init 1"); console.log({pts});
 	pts = pts.map((pt)=>(t0.applyTranslate(pt)));
+	// console.log("init 2"); console.log({pts});
 	
 	// pts = [new Vector2(cx,cy)];
 
@@ -867,13 +873,15 @@ export function getPolygonIntersect(pA:IVector2[]|IVector2[][], pB:IVector2[]|IV
 
 		let intersects:IVector2[] = [];
 
-		for(let i=0; i<pA.length-1;i++){
-			let aa = new Vector2(pA[i] as IVector2); let ab = new Vector2(pA[i+1] as IVector2);
+		for(let i=0; i<pA.length;i++){
+			let aa = new Vector2(pA[i] as IVector2); 
+			let ab = new Vector2(pA[(i+1)%pA.length] as IVector2);
 			let lineA = new Vector2Line(aa,ab);
 			let lineARect = Rect2.from([aa,ab]);
 
-			for(let j=0; j<pB.length-1;j++){
-				let ba = new Vector2(pB[j] as IVector2); let bb = new Vector2(pB[j+1] as IVector2);
+			for(let j=0; j<pB.length;j++){
+				let ba = new Vector2(pB[j] as IVector2); 
+				let bb = new Vector2(pB[(j+1)%pB.length] as IVector2);
 				let lineB = new Vector2Line(ba,bb);
 				let lineBRect = Rect2.from([ba,bb]);
 
@@ -883,22 +891,27 @@ export function getPolygonIntersect(pA:IVector2[]|IVector2[][], pB:IVector2[]|IV
 				if(lineBRect.containsPoint(v) && lineARect.containsPoint(v)){
 					intersects.push(v);
 				}
+				if(intersectRect.containsPoint(ba)){
+					if(isPointInsidePolygon(pA as IVector2[], ba)){
+						intersects.push(ba);
+					}
+				}
 				
 			}
-			if(intersectRect.containsPoint(aa)){
-				if(isPointInsidePolygon(pB as IVector2[], aa)){
-					intersects.push(aa);
+			if(intersectRect.containsPoint(ab)){
+				if(isPointInsidePolygon(pB as IVector2[], ab)){
+					intersects.push(ab);
 				}
 			}
 		}
-		for(let j=0; j<pB.length-1;j++){
-			let ba = new Vector2(pB[j] as IVector2);
-			if(intersectRect.containsPoint(ba)){
-				if(isPointInsidePolygon(pA as IVector2[], ba)){
-					intersects.push(ba);
-				}
-			}
-		}
+		// for(let j=0; j<pB.length;j++){
+		// 	let ba = new Vector2(pB[(j+1)%pB.length] as IVector2);
+		// 	if(intersectRect.containsPoint(ba)){
+		// 		if(isPointInsidePolygon(pA as IVector2[], ba)){
+		// 			intersects.push(ba);
+		// 		}
+		// 	}
+		// }
 
 		if(!intersects.length) return null;
 
@@ -909,4 +922,113 @@ export function getPolygonIntersect(pA:IVector2[]|IVector2[][], pB:IVector2[]|IV
 		return resPolygon;
 
 	}
+}
+
+export function fixPolygonPointsOrder(polygon:IVector2[], precision=Number.EPSILON){
+	let arr:IVector2[] = polygon.map(pt => new Vector2(pt)).slice();
+	let len = arr.length;
+
+	let rect = Rect2.from(arr);
+
+	let swaps = [];
+	mainLoop : for(let p=0; p<len+1; p++){
+		swaps = [];
+
+		loopA : for(let i=0; i<len; i++){
+			let nextI = (i+1) % len;
+			
+			let aa = arr[i];
+			let ab = arr[nextI];
+			let lineA = new Vector2Line(aa, ab);
+			let lineARect = Rect2.from([aa, ab]);
+
+			console.log(`lineA ${aa} -- ${ab}`);
+			
+			loopB : for(let j=0; j<len; j++){
+				if(j == i) continue;
+				let nextJ = (j+1) % len;
+				
+				let ba = arr[j];
+				let bb = arr[ (j+1) % len ];
+				let lineB = new Vector2Line(ba, bb);
+				let lineBRect = Rect2.from([ba, bb]);
+				
+				console.log(`lineB ${ba} -- ${bb}`);
+				let intersectAB = lineA.intersect(lineB);
+				
+				console.log(`intersectAB ${intersectAB}`);
+				if(!intersectAB) continue;
+
+				for(let pt of arr){
+					if(Vector2.EQUALS(pt, intersectAB, precision)){
+						console.log(`intersect ${intersectAB} is a polygon point`)
+						continue loopB;
+					}
+				}
+
+				let rectIntersect = lineARect.getIntersectWith(lineBRect);
+
+				if(rectIntersect && rectIntersect.containsPoint(intersectAB)){
+					//swap lineA's start and lineB's end
+					swaps.push([i, nextJ]);
+					let temp = arr[i];
+					arr[i] = arr[nextJ];
+					arr[nextJ] = temp;
+					console.log(`swapped ${arr[i]} and ${arr[nextJ]}`)
+					// continue loopA;
+				}
+			}
+
+		}
+
+		if(!swaps.length){
+			break mainLoop;
+		}
+
+		// for(let swap of swaps){
+		// 	let [i,j] = swap;
+		// 	let temp = arr[i];
+		// 	arr[i] = arr[j];
+		// 	arr[j] = temp;
+
+		// }
+	}
+
+	if(swaps.length){
+		console.log("I give up, just use convex hull")
+		arr = sortPoints(arr);
+	}
+
+	return arr.slice();
+
+}
+
+export function convexHullSort(polygon:IVector2[]){
+	return sortPoints(polygon);
+}
+
+function sortPoints(points:IVector2[]) {
+    points = points.slice();
+    let p0 = new Vector2();
+    p0.y = Math.min.apply(null, points.map(p=>p.y));
+    p0.x = Math.max.apply(null, points.filter(p=>p.y == p0.y).map(p=>p.x));
+    points.sort((a,b)=>angleCompare(p0, a, b));
+
+    return points;
+};
+
+function angleCompare(p0:IVector2, a:IVector2, b:IVector2) {
+    var left = isLeft(p0, a, b);
+    if (left == 0) return distCompare(p0, a, b);
+    return left;
+}
+
+function isLeft(p0:IVector2, a:IVector2, b:IVector2) {
+    return (a.x-p0.x)*(b.y-p0.y) - (b.x-p0.x)*(a.y-p0.y);
+}
+
+function distCompare(p0:IVector2, a:IVector2, b:IVector2) {
+    var distA = (p0.x-a.x)*(p0.x-a.x) + (p0.y-a.y)*(p0.y-a.y);
+    var distB = (p0.x-b.x)*(p0.x-b.x) + (p0.y-b.y)*(p0.y-b.y);
+    return distA - distB;
 }

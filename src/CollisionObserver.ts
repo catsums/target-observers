@@ -377,8 +377,10 @@ export class CollisionObserver extends ProcessingTarget{
 								vertices: 8, increment: 0.125
 							}});
 
+							
 							let _intersects = getPolygonIntersect(elemPts, targPts, this._precision);
-
+							
+							// console.log({elemPts, targPts, _intersects});
 							if(_intersects && !proxy.currentCollisions.find( (_c)=>(_c.id == targID) )){
 								_collisionData = {
 									targetID: targID,
