@@ -178,7 +178,7 @@ export class PropertyObserver extends ProcessingTarget{
 
 	}
 
-	observe(elem : Object|Object[], opts:IObject|any[]){
+	observe(elem : object|object[], opts:IObject|any[]){
 		let proxies:any[] = null;
 
 		if(opts instanceof Array){
@@ -223,7 +223,7 @@ export class PropertyObserver extends ProcessingTarget{
 		return proxies;
 	}
 
-	disconnect(elem:Object){
+	disconnect(elem:object){
 		let proxy = this._proxies.get(elem);
 		if(!proxy) return;
 
